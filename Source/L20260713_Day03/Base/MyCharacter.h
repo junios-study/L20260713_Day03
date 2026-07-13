@@ -4,7 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "InputAction.h"
+
 #include "MyCharacter.generated.h"
+
+
 
 
 class USpringArmComponent;
@@ -35,4 +40,19 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UCameraComponent> Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Move;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Look;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Jump;
+
+	void Look(const FInputActionValue& Value);
+
+	void Move(const FInputActionValue& Value);
+
+
 };

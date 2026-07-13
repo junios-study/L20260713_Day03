@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPC.generated.h"
 
+
+class UInputMappingContext;
 /**
  * 
  */
@@ -14,4 +16,9 @@ class L20260713_DAY03_API AMyPC : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TSoftObjectPtr<UInputMappingContext> InputMapping;
 };

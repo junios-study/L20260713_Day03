@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -43,5 +44,29 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UEnhancedInputComponent* UIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (UIC)
+	{
+		UIC->BindAction(IA_Jump, ETriggerEvent::Triggered, this, &AMyCharacter::Jump);
+		UIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &AMyCharacter::Look);
+		UIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AMyCharacter::Move);
+	}
+
 }
+
+void AMyCharacter::Look(const FInputActionValue& Value)
+{
+	FVector2D Direction = Value.Get<FVector2D>();
+
+	AddControllerPitchInput(Direction.Y);
+	AddControllerYawInput(Direction.X);
+}
+
+void AMyCharacter::Move(const FInputActionValue& Value)
+{
+	FVector2D Direction = Value.Get<FVector2D>();
+
+	AddMovementInput(FVector(Direction.X, Direction.Y, 0));
+}
+
 
