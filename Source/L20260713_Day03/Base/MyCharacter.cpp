@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -60,13 +62,23 @@ void AMyCharacter::Look(const FInputActionValue& Value)
 
 	AddControllerPitchInput(Direction.Y);
 	AddControllerYawInput(Direction.X);
+//	AddControllerRollInput(Direction.Y);
 }
 
 void AMyCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D Direction = Value.Get<FVector2D>();
 
-	AddMovementInput(FVector(Direction.X, Direction.Y, 0));
+	FRotator CameraRotaion = GetControlRotation();
+
+
+	FVector ForawrdVector =  UKismetMathLibrary::GetForwardVector( FRotator(0, CameraRotaion.Yaw, 0));
+	FVector RightVector =  UKismetMathLibrary::GetRightVector(FRotator(0, CameraRotaion.Yaw, 0));
+
+	
+	AddMovementInput(ForawrdVector * Direction.X);
+	AddMovementInput(RightVector * Direction.Y);
 }
+
 
 

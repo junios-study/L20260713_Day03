@@ -8,8 +8,9 @@ public class L20260713_Day03EditorTarget : TargetRules
 	public L20260713_Day03EditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V7;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
-		ExtraModuleNames.AddRange( new string[] { "L20260713_Day03" } );
+        ExtraModuleNames.AddRange( new string[] { "L20260713_Day03" } );
 	}
 }
