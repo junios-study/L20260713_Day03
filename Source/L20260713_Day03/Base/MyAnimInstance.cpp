@@ -4,6 +4,7 @@
 #include "MyAnimInstance.h"
 #include "MyCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "KismetAnimationLibrary.h"
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -12,8 +13,9 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	AMyCharacter* Character = Cast<AMyCharacter>(TryGetPawnOwner());
 	if (Character)
 	{
+		//Syncronize Pawn data.
 		Speed = Character->GetCharacterMovement()->Velocity.Size2D();
-		Direction = CalculateDirection(Character->GetCharacterMovement()->Velocity, Character->GetActorRotation());
-		//bArmed = Character->bArmed;
+		Direction = UKismetAnimationLibrary::CalculateDirection(Character->GetCharacterMovement()->Velocity, Character->GetActorRotation());
+		bArmed = Character->bArmed;
 	}
 }

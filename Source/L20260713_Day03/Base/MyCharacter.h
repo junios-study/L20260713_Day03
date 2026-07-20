@@ -60,6 +60,9 @@ public:
 	void Zoom(const FInputActionValue& Value);
 
 	float NewTargetArmLength = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	uint32 bArmed : 1 = false;
 };
 
 

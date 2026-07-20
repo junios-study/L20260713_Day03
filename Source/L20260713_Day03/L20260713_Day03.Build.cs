@@ -13,7 +13,8 @@ public class L20260713_Day03 : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
-            "EnhancedInput"
+            "EnhancedInput",
+            "AnimGraphRuntime"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
