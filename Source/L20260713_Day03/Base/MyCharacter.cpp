@@ -71,9 +71,8 @@ void AMyCharacter::Move(const FInputActionValue& Value)
 
 	FRotator CameraRotaion = GetControlRotation();
 
-
 	FVector ForawrdVector =  UKismetMathLibrary::GetForwardVector( FRotator(0, CameraRotaion.Yaw, 0));
-	FVector RightVector =  UKismetMathLibrary::GetRightVector(FRotator(0, CameraRotaion.Yaw, 0));
+	FVector RightVector =  UKismetMathLibrary::GetRightVector(FRotator(0, CameraRotaion.Yaw, CameraRotaion.Roll));
 
 	
 	AddMovementInput(ForawrdVector * Direction.X);
