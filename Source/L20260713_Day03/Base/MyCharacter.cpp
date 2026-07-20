@@ -27,6 +27,8 @@ AMyCharacter::AMyCharacter()
 
 	NewTargetArmLength = CameraBoom->TargetArmLength;
 
+	bArmed = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -43,7 +45,6 @@ void AMyCharacter::Tick(float DeltaTime)
 
 	CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength, NewTargetArmLength, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()),
 		4.0f);
-
 }
 
 // Called to bind functionality to input

@@ -26,5 +26,11 @@ public:
 	float Direction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	float AimPitch;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	float AimYaw;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	uint32 bArmed : 1 = false;
 };
