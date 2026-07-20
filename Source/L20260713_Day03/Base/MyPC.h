@@ -17,6 +17,8 @@ class L20260713_DAY03_API AMyPC : public APlayerController
 	GENERATED_BODY()
 	
 public:
+	AMyPC();
+
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")

@@ -25,10 +25,7 @@ AMyCharacter::AMyCharacter()
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),
 		FRotator(0, -90, 0));
 
-	NewTargetArmLength = CameraBoom->TargetArmLength;
-
 	bArmed = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -42,9 +39,6 @@ void AMyCharacter::BeginPlay()
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength, NewTargetArmLength, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()),
-		4.0f);
 }
 
 // Called to bind functionality to input
@@ -59,7 +53,9 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		UIC->BindAction(IA_Look, ETriggerEvent::Triggered, this, &AMyCharacter::Look);
 		UIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AMyCharacter::Move);
 
-		UIC->BindAction(IA_Zoom, ETriggerEvent::Triggered, this, &AMyCharacter::Zoom);
+		UIC->BindAction(IA_Zoom, ETriggerEvent::Triggered, this, &AMyCharacter::StartZoom);
+		UIC->BindAction(IA_Zoom, ETriggerEvent::Canceled, this, &AMyCharacter::StopZoom);
+		UIC->BindAction(IA_Zoom, ETriggerEvent::Completed, this, &AMyCharacter::StopZoom);
 	}
 
 }
@@ -87,10 +83,14 @@ void AMyCharacter::Move(const FInputActionValue& Value)
 	AddMovementInput(RightVector * Direction.Y);
 }
 
-void AMyCharacter::Zoom(const FInputActionValue& Value)
+void AMyCharacter::StartZoom()
 {
-	NewTargetArmLength = CameraBoom->TargetArmLength - Value.Get<float>() * 700.0f;
-	NewTargetArmLength = FMath::Clamp(NewTargetArmLength, 40, NewTargetArmLength);
+	bZoom = true;
+}
+
+void AMyCharacter::StopZoom()
+{
+	bZoom = false;
 }
 
 

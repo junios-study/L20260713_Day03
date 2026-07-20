@@ -5,6 +5,12 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "MyPlayerCameraManager.h"
+
+AMyPC::AMyPC()
+{
+	PlayerCameraManagerClass = AMyPlayerCameraManager::StaticClass();
+}
 
 void AMyPC::BeginPlay()
 {
