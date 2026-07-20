@@ -50,9 +50,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> IA_Jump;
 
-	void Look(const FInputActionValue& Value);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Zoom;
 
+	void Look(const FInputActionValue& Value);
+	
 	void Move(const FInputActionValue& Value);
 
+	void Zoom(const FInputActionValue& Value);
 
+	float NewTargetArmLength = 0;
 };
+
+
