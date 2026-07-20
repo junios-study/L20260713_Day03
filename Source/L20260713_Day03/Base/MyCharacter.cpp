@@ -9,6 +9,8 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -56,6 +58,10 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		UIC->BindAction(IA_Zoom, ETriggerEvent::Triggered, this, &AMyCharacter::StartZoom);
 		UIC->BindAction(IA_Zoom, ETriggerEvent::Canceled, this, &AMyCharacter::StopZoom);
 		UIC->BindAction(IA_Zoom, ETriggerEvent::Completed, this, &AMyCharacter::StopZoom);
+
+		UIC->BindAction(IA_Lean, ETriggerEvent::Triggered, this, &AMyCharacter::Lean);
+		UIC->BindAction(IA_Lean, ETriggerEvent::Canceled, this, &AMyCharacter::Lean);
+		UIC->BindAction(IA_Lean, ETriggerEvent::Completed, this, &AMyCharacter::Lean);
 	}
 
 }
@@ -86,11 +92,18 @@ void AMyCharacter::Move(const FInputActionValue& Value)
 void AMyCharacter::StartZoom()
 {
 	bZoom = true;
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 }
 
 void AMyCharacter::StopZoom()
 {
 	bZoom = false;
+	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+}
+
+void AMyCharacter::Lean(const FInputActionValue& Value)
+{
+	LeanValue = Value.Get<float>();
 }
 
 

@@ -53,6 +53,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> IA_Zoom;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Lean;
+
 	void Look(const FInputActionValue& Value);
 	
 	void Move(const FInputActionValue& Value);
@@ -61,12 +64,21 @@ public:
 
 	void StopZoom();
 
+
+	void Lean(const FInputActionValue& Value);
+
+	//void StopLean(const FInputActionValue& Value);
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	uint32 bArmed : 1 = false;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	uint32 bZoom : 1 = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	float LeanValue = 0;
 
 };
 

@@ -33,4 +33,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	uint32 bArmed : 1 = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	uint32 bZoom : 1 = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	float LeanValue = 0;
 };

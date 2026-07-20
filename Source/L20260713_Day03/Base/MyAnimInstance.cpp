@@ -19,5 +19,8 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bArmed = Character->bArmed;
 
 		AimPitch = Character->GetBaseAimRotation().Pitch;
+
+		bZoom = Character->bZoom;
+		LeanValue = Character->LeanValue;
 	}
 }
