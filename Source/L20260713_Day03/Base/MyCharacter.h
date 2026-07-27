@@ -14,6 +14,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UChildActorComponent;
 
 UCLASS()
 class L20260713_DAY03_API AMyCharacter : public ACharacter
@@ -40,6 +41,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UCameraComponent> Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UChildActorComponent> Weapon;
+
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> IA_Move;

@@ -10,6 +10,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/ChildActorComponent.h"
+#include "MyWeaponBase.h"
 
 
 // Sets default values
@@ -26,6 +28,9 @@ AMyCharacter::AMyCharacter()
 
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),
 		FRotator(0, -90, 0));
+
+	Weapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("Weapon"));
+	Weapon->SetupAttachment(GetMesh(), FName(TEXT("HandGrip_R")));
 
 	bArmed = true;
 }
@@ -71,12 +76,35 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::StartFire()
 {
+	if (!bArmed)
+	{
+		return; 
+	}
+
 	bFire = true;
+
+	AMyWeaponBase* ChildWeapon = Cast<AMyWeaponBase>(Weapon->GetChildActor());
+	if (ChildWeapon)
+	{
+		ChildWeapon->StartFire();
+	}
+
 }
 
 void AMyCharacter::StopFire()
 {
+	if (!bArmed)
+	{
+		return;
+	}
+
 	bFire = false;
+
+	AMyWeaponBase* ChildWeapon = Cast<AMyWeaponBase>(Weapon->GetChildActor());
+	if (ChildWeapon)
+	{
+		ChildWeapon->StopFire();
+	}
 }
 
 void AMyCharacter::Look(const FInputActionValue& Value)

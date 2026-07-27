@@ -31,9 +31,11 @@ void AMyWeaponBase::Tick(float DeltaTime)
 
 void AMyWeaponBase::StartFire()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Start Fire"));
 }
 
 
 void AMyWeaponBase::StopFire()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Stop Fire"));
 }
