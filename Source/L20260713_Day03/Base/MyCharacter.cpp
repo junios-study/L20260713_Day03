@@ -147,5 +147,14 @@ void AMyCharacter::Lean(const FInputActionValue& Value)
 	LeanValue = Value.Get<float>();
 }
 
+float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	//HP -= DamageAmount;
+
+	return 0.0f;
+}
+
 
 

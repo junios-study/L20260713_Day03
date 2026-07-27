@@ -71,6 +71,13 @@ void AMyWeaponBase::Fire()
 	if (LineTrace(OutResult))
 	{
 		//맞았을때
+		UGameplayStatics::ApplyDamage(
+			OutResult.GetActor(),
+			10.0f,
+			nullptr,
+			nullptr,
+			nullptr
+		);
 	}
 	else
 	{
@@ -137,13 +144,48 @@ bool AMyWeaponBase::LineTrace(FHitResult& OutResult)
 		UEngineTypes::ConvertToTraceType(ECC_Visibility),
 		true,
 		IgnoreActors,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		OutResult,
 		true,
 		FLinearColor::Red,
 		FLinearColor::Green,
 		3.0f
 	);
+
+
+	//누군가 맞았다.
+	if (bResult)
+	{
+		Start = Mesh->GetSocketLocation(TEXT("Muzzle"));
+		FVector ForwardVector = OutResult.ImpactPoint - Start;
+		ForwardVector.Normalize();
+		End = Start + (ForwardVector * Range);
+
+		
+		//Muzzle LineTace
+		bResult = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+			Start,
+			End,
+			UEngineTypes::ConvertToTraceType(ECC_Visibility),
+			true,
+			IgnoreActors,
+			EDrawDebugTrace::ForDuration,
+			OutResult,
+			true,
+			FLinearColor::Red,
+			FLinearColor::Green,
+			3.0f
+		);
+
+		//총알 발사.
+	}
+	else
+	{
+		bResult = false;
+	}
+
+
+
 
 	return bResult;
 }
