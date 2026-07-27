@@ -40,9 +40,9 @@ void AMyWeaponBase::Tick(float DeltaTime)
 		if (CoolDown <= 0.f)
 		{
 			Fire();
-			//MakeMuzzleFlash();
+			MakeMuzzleFlash();
 			CoolDown = FiringRate;
-			UE_LOG(LogTemp, Warning, TEXT("Fire"));
+			//UE_LOG(LogTemp, Warning, TEXT("Fire"));
 		}
 	}
 
@@ -51,7 +51,7 @@ void AMyWeaponBase::Tick(float DeltaTime)
 
 void AMyWeaponBase::StartFire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Start Fire"));
+	//UE_LOG(LogTemp, Warning, TEXT("Start Fire"));
 
 	bCanFire = true;
 	FiringRate = FireRate;
@@ -60,7 +60,7 @@ void AMyWeaponBase::StartFire()
 
 void AMyWeaponBase::StopFire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stop Fire"));
+	//UE_LOG(LogTemp, Warning, TEXT("Stop Fire"));
 
 	bCanFire = false;
 }
@@ -82,6 +82,11 @@ void AMyWeaponBase::Fire()
 
 void AMyWeaponBase::MakeMuzzleFlash()
 {
+	UGameplayStatics::SpawnEmitterAtLocation(
+		GetWorld(),
+		MuzzleFlash,
+		Mesh->GetSocketLocation(TEXT("MuzzleFlash"))
+	);
 }
 
 bool AMyWeaponBase::LineTrace(FHitResult& OutResult)
