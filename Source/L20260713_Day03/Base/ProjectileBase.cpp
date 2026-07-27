@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/DecalComponent.h"
 
 
 // Sets default values
@@ -45,13 +46,27 @@ void AProjectileBase::ProcessHit(UPrimitiveComponent* HitComponent, AActor* Othe
 {
 	UE_LOG(LogTemp, Warning, TEXT("Hit %s"), *OtherActor->GetName());
 
+	UDecalComponent* MadeDecal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(),
+		Decal,
+		FVector(5, 5, 5),
+		Hit.ImpactPoint,
+		Hit.ImpactNormal.Rotation(),
+		5.0f
+	);
+
+	MadeDecal->SetFadeScreenSize(0.005f);
+
 	//맞았을때
-	UGameplayStatics::ApplyDamage(
+	UGameplayStatics::ApplyPointDamage(
 		Hit.GetActor(),
 		10.0f,
+		-Hit.ImpactNormal,
+		Hit,
 		nullptr,
 		nullptr,
-		nullptr
+		DamageType
 	);
+
+	Destroy();
 }
 

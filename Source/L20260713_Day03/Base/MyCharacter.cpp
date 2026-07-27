@@ -12,6 +12,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/ChildActorComponent.h"
 #include "MyWeaponBase.h"
+#include "GameFramework/DamageType.h"
+#include "Engine/DamageEvents.h"
 
 
 // Sets default values
@@ -151,16 +153,58 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	CurrentHP -= DamageAmount;
 
-	CurrentHP = FMath::Clamp(CurrentHP, 0, MaxHP);
+	if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
+	{
+		FPointDamageEvent* Event = (FPointDamageEvent*)(&DamageEvent);
+		if (Event)
+		{
+			SpawnHitEffect(Event->HitInfo);
 
-	if (CurrentHP == 0)
+			if (CurrentHP <= 0)
+			{
+				return 0;
+			}
+
+			if (Event->HitInfo.BoneName == TEXT("head"))
+			{
+				CurrentHP = 0;
+				DamageAmount = 100.f;
+			}
+			else
+			{
+				CurrentHP -= DamageAmount;
+			}
+		
+
+			CurrentHP = FMath::Clamp(CurrentHP, 0, MaxHP);
+
+			if (CurrentHP == 0)
+			{
+				GetMesh()->SetSimulatePhysics(true);
+				GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+			}
+
+
+		}
+	}
+	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 
 	}
 
-	return 0.0f;
+
+
+	return DamageAmount;
+}
+
+void AMyCharacter::SpawnHitEffect(const FHitResult& InResult)
+{
+	UGameplayStatics::SpawnEmitterAtLocation(
+		GetWorld(),
+		HitEffect,
+		InResult.ImpactPoint
+	);
 }
 
 

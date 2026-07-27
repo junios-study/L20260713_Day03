@@ -108,6 +108,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	float MaxHP = 100.0f;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UParticleSystem> HitEffect;
+
+	UFUNCTION()
+	void SpawnHitEffect(const FHitResult& InResult);
 };
 
 

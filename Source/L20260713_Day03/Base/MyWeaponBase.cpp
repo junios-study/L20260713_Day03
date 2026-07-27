@@ -85,7 +85,7 @@ void AMyWeaponBase::MakeMuzzleFlash()
 	UGameplayStatics::SpawnEmitterAtLocation(
 		GetWorld(),
 		MuzzleFlash,
-		Mesh->GetSocketLocation(TEXT("MuzzleFlash"))
+		Mesh->GetSocketLocation(TEXT("Muzzle"))
 	);
 }
 
