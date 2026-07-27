@@ -151,7 +151,14 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	//HP -= DamageAmount;
+	CurrentHP -= DamageAmount;
+
+	CurrentHP = FMath::Clamp(CurrentHP, 0, MaxHP);
+
+	if (CurrentHP == 0)
+	{
+
+	}
 
 	return 0.0f;
 }

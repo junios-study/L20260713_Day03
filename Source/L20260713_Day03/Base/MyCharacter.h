@@ -102,6 +102,12 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	float CurrentHP = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	float MaxHP = 100.0f;
 };
 
 
