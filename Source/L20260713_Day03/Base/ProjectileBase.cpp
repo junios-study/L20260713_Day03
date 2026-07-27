@@ -59,7 +59,7 @@ void AProjectileBase::ProcessHit(UPrimitiveComponent* HitComponent, AActor* Othe
 	//맞았을때
 	UGameplayStatics::ApplyPointDamage(
 		Hit.GetActor(),
-		10.0f,
+		1.0f,
 		-Hit.ImpactNormal,
 		Hit,
 		nullptr,

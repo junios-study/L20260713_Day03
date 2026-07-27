@@ -66,6 +66,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> IA_Fire;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Reload;
+
 	UFUNCTION(BlueprintCallable)
 	void StartFire();
 
@@ -83,6 +86,8 @@ public:
 	void StartZoom();
 
 	void StopZoom();
+
+	void Reload();
 
 
 	void Lean(const FInputActionValue& Value);
@@ -115,6 +120,13 @@ public:
 
 	UFUNCTION()
 	void SpawnHitEffect(const FHitResult& InResult);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UAnimMontage> HitReactionAnimMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UAnimMontage> ReloadAnimMontage; 
 };
 
 

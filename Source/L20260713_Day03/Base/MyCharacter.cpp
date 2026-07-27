@@ -73,6 +73,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		UIC->BindAction(IA_Fire, ETriggerEvent::Triggered, this, &AMyCharacter::StartFire);
 		UIC->BindAction(IA_Fire, ETriggerEvent::Canceled, this, &AMyCharacter::StopFire);
 		UIC->BindAction(IA_Fire, ETriggerEvent::Completed, this, &AMyCharacter::StopFire);
+
+		UIC->BindAction(IA_Reload, ETriggerEvent::Triggered, this, &AMyCharacter::Reload);
 	}
 }
 
@@ -173,6 +175,10 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 			}
 			else
 			{
+				int32 MontageType = FMath::RandRange(1, 8);
+				FString SectionName = FString::Printf(TEXT("%d"), MontageType);
+				PlayAnimMontage(HitReactionAnimMontage, 1.0f,
+					FName(*SectionName));
 				CurrentHP -= DamageAmount;
 			}
 		
@@ -207,5 +213,9 @@ void AMyCharacter::SpawnHitEffect(const FHitResult& InResult)
 	);
 }
 
+void AMyCharacter::Reload()
+{
+	PlayAnimMontage(ReloadAnimMontage);
+}
 
 

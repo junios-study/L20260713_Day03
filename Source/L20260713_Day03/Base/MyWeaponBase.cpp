@@ -160,7 +160,7 @@ bool AMyWeaponBase::LineTrace(FHitResult& OutResult)
 	End = OutResult.bBlockingHit ? End : OutResult.TraceEnd;
 
 	FRotator SpawnRotator = UKismetMathLibrary::FindLookAtRotation(
-		Start, End
+		Start, End + (UKismetMathLibrary::RandomUnitVector() * 0.3f)
 	);
 
 	GetWorld()->SpawnActor<AProjectileBase>(ProjectileTemplate,
