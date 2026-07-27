@@ -5,6 +5,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 AProjectileBase::AProjectileBase()
@@ -41,5 +43,15 @@ void AProjectileBase::Tick(float DeltaTime)
 
 void AProjectileBase::ProcessHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Hit %s"), *OtherActor->GetName());
+
+	//맞았을때
+	UGameplayStatics::ApplyDamage(
+		Hit.GetActor(),
+		10.0f,
+		nullptr,
+		nullptr,
+		nullptr
+	);
 }
 

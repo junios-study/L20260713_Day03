@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "ProjectileBase.h"
 
 // Sets default values
 AMyWeaponBase::AMyWeaponBase()
@@ -70,14 +71,7 @@ void AMyWeaponBase::Fire()
 	
 	if (LineTrace(OutResult))
 	{
-		//맞았을때
-		UGameplayStatics::ApplyDamage(
-			OutResult.GetActor(),
-			10.0f,
-			nullptr,
-			nullptr,
-			nullptr
-		);
+
 	}
 	else
 	{
@@ -161,23 +155,25 @@ bool AMyWeaponBase::LineTrace(FHitResult& OutResult)
 		ForwardVector.Normalize();
 		End = Start + (ForwardVector * Range);
 
-		
-		//Muzzle LineTace
-		bResult = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-			Start,
-			End,
-			UEngineTypes::ConvertToTraceType(ECC_Visibility),
-			true,
-			IgnoreActors,
-			EDrawDebugTrace::ForDuration,
-			OutResult,
-			true,
-			FLinearColor::Red,
-			FLinearColor::Green,
-			3.0f
+		GetWorld()->SpawnActor<AProjectileBase>(ProjectileTemplate,
+			Mesh->GetSocketTransform(TEXT("Muzzle"))
 		);
+		
+		////Muzzle LineTace
+		//bResult = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
+		//	Start,
+		//	End,
+		//	UEngineTypes::ConvertToTraceType(ECC_Visibility),
+		//	true,
+		//	IgnoreActors,
+		//	EDrawDebugTrace::ForDuration,
+		//	OutResult,
+		//	true,
+		//	FLinearColor::Red,
+		//	FLinearColor::Green,
+		//	3.0f
+		//);
 
-		//총알 발사.
 	}
 	else
 	{

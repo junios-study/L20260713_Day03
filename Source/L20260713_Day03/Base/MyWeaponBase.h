@@ -8,6 +8,7 @@
 
 class USkeletalMeshComponent;
 class UAnimMontage;
+class AProjectileBase;
 
 UCLASS()
 class L20260713_DAY03_API AMyWeaponBase : public AActor
@@ -62,6 +63,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	float CoolDown = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TSubclassOf<AProjectileBase> ProjectileTemplate;
 	
 
 	UFUNCTION(BlueprintCallable)
