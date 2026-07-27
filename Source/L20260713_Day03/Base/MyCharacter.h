@@ -56,6 +56,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TObjectPtr<UInputAction> IA_Lean;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TObjectPtr<UInputAction> IA_Fire;
+
+	UFUNCTION(BlueprintCallable)
+	void StartFire();
+
+	UFUNCTION(BlueprintCallable)
+	void StopFire();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	uint32 bFire : 1 = false;
+
+
 	void Look(const FInputActionValue& Value);
 	
 	void Move(const FInputActionValue& Value);

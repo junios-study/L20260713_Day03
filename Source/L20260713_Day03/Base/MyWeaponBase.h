@@ -7,6 +7,7 @@
 #include "MyWeaponBase.generated.h"
 
 class USkeletalMeshComponent;
+class UAnimMontage;
 
 UCLASS()
 class L20260713_DAY03_API AMyWeaponBase : public AActor
@@ -27,4 +28,38 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> Mesh;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	int32 MaxBulletCount = 30;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	int32 CurrentBulletCount = 30;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UAnimMontage> FireAnimMontage;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UAnimMontage> ReloadAnimMontage;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UParticleSystem> MuzzleFlash;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	uint8 bFullAuto : 1 = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float FireRate = 0.01f;
+
+	UFUNCTION(BlueprintCallable)
+	void StartFire();
+
+	UFUNCTION(BlueprintCallable)
+	void StopFire();
+
+
+
 };

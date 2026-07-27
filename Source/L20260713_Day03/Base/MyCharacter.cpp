@@ -62,8 +62,21 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		UIC->BindAction(IA_Lean, ETriggerEvent::Triggered, this, &AMyCharacter::Lean);
 		UIC->BindAction(IA_Lean, ETriggerEvent::Canceled, this, &AMyCharacter::Lean);
 		UIC->BindAction(IA_Lean, ETriggerEvent::Completed, this, &AMyCharacter::Lean);
-	}
 
+		UIC->BindAction(IA_Fire, ETriggerEvent::Triggered, this, &AMyCharacter::StartFire);
+		UIC->BindAction(IA_Fire, ETriggerEvent::Canceled, this, &AMyCharacter::StopFire);
+		UIC->BindAction(IA_Fire, ETriggerEvent::Completed, this, &AMyCharacter::StopFire);
+	}
+}
+
+void AMyCharacter::StartFire()
+{
+	bFire = true;
+}
+
+void AMyCharacter::StopFire()
+{
+	bFire = false;
 }
 
 void AMyCharacter::Look(const FInputActionValue& Value)

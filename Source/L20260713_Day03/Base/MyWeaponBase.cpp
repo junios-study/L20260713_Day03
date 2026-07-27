@@ -28,3 +28,12 @@ void AMyWeaponBase::Tick(float DeltaTime)
 
 }
 
+
+void AMyWeaponBase::StartFire()
+{
+}
+
+
+void AMyWeaponBase::StopFire()
+{
+}
