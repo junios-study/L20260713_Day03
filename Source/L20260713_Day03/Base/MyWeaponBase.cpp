@@ -152,38 +152,22 @@ bool AMyWeaponBase::LineTrace(FHitResult& OutResult)
 	);
 
 
-	//누군가 맞았다.
-	if (bResult)
-	{
-		Start = Mesh->GetSocketLocation(TEXT("Muzzle"));
-		FVector ForwardVector = OutResult.ImpactPoint - Start;
-		ForwardVector.Normalize();
-		End = Start + (ForwardVector * Range);
+	Start = Mesh->GetSocketLocation(TEXT("Muzzle"));
+	FVector ForwardVector = OutResult.ImpactPoint - Start;
+	ForwardVector.Normalize();
+	End = Start + (ForwardVector * Range);
 
-		GetWorld()->SpawnActor<AProjectileBase>(ProjectileTemplate,
-			Mesh->GetSocketTransform(TEXT("Muzzle"))
-		);
-		
-		////Muzzle LineTace
-		//bResult = UKismetSystemLibrary::LineTraceSingle(GetWorld(),
-		//	Start,
-		//	End,
-		//	UEngineTypes::ConvertToTraceType(ECC_Visibility),
-		//	true,
-		//	IgnoreActors,
-		//	EDrawDebugTrace::ForDuration,
-		//	OutResult,
-		//	true,
-		//	FLinearColor::Red,
-		//	FLinearColor::Green,
-		//	3.0f
-		//);
+	End = OutResult.bBlockingHit ? End : OutResult.TraceEnd;
 
-	}
-	else
-	{
-		bResult = false;
-	}
+	FRotator SpawnRotator = UKismetMathLibrary::FindLookAtRotation(
+		Start, End
+	);
+
+	GetWorld()->SpawnActor<AProjectileBase>(ProjectileTemplate,
+		Start,
+		SpawnRotator
+	);
+
 
 
 
