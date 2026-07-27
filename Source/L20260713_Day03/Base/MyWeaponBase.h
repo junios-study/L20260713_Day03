@@ -52,7 +52,17 @@ public:
 	uint8 bFullAuto : 1 = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	float FireRate = 0.01f;
+	uint8 bCanFire : 1 = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float FireRate = 0.15f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float FiringRate = 0.01f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float CoolDown = 0.f;
+	
 
 	UFUNCTION(BlueprintCallable)
 	void StartFire();
@@ -61,5 +71,13 @@ public:
 	void StopFire();
 
 
+	UFUNCTION(BlueprintCallable)
+	void Fire();
+
+	UFUNCTION(BlueprintCallable)
+	void MakeMuzzleFlash();
+
+	UFUNCTION(BlueprintCallable)
+	bool LineTrace(FHitResult& OutResult);
 
 };
