@@ -32,19 +32,15 @@ void AZombieAIController::OnPossess(APawn* InPawn)
 		RunBehaviorTree(RunTree);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Perception %x"), GetPerceptionComponent());
-
 	if (Perception)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Add %x"), GetPerceptionComponent());
-
 		Perception->OnTargetPerceptionForgotten.AddDynamic(this, &AZombieAIController::OnActorPerceptionForgetUpdated);
 
 		Perception->OnPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionUpdated);
 
-		Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnActorPerceptionUpdated);
+		//Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnActorPerceptionUpdated);
 
-		Perception->OnTargetPerceptionInfoUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionInfoUpdated);
+		//Perception->OnTargetPerceptionInfoUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionInfoUpdated);
 	}
 
 
@@ -85,4 +81,14 @@ void AZombieAIController::OnActorPerceptionForgetUpdated(AActor* Actor)
 
 void AZombieAIController::OnPerceptionInfoUpdated(const FActorPerceptionUpdateInfo& UpdateInfo)
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnPerceptionInfoUpdated %s"), *UpdateInfo.Stimulus.Type.Name.ToString());
+
 }
+
+
+void AZombieAIController::SetState(EZombieState NewState)
+{
+	//BB Update
+	//Zombie State 업데이트
+}
+

@@ -6,6 +6,7 @@
 #include "AIController.h"
 
 #include "Perception/AIPerceptionTypes.h"
+#include "Zombie.h"
 
 #include "ZombieAIController.generated.h"
 
@@ -48,4 +49,7 @@ public:
 
 	UFUNCTION()
 	void OnPerceptionInfoUpdated(const FActorPerceptionUpdateInfo& UpdateInfo);
+
+	UFUNCTION(BlueprintCallable)
+	void SetState(EZombieState NewState);
 };
