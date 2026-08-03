@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 
 #include "InputAction.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "MyCharacter.generated.h"
 
@@ -17,7 +18,7 @@ class UCameraComponent;
 class UChildActorComponent;
 
 UCLASS()
-class L20260713_DAY03_API AMyCharacter : public ACharacter
+class L20260713_DAY03_API AMyCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
