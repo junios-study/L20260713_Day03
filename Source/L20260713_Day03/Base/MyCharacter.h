@@ -16,6 +16,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UChildActorComponent;
+class UAIPerceptionStimuliSourceComponent;
 
 UCLASS()
 class L20260713_DAY03_API AMyCharacter : public ACharacter, public IGenericTeamAgentInterface
@@ -45,6 +46,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UChildActorComponent> Weapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UAIPerceptionStimuliSourceComponent> StimuliSource;
+
+	
 
 
 
@@ -128,6 +134,30 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TObjectPtr<UAnimMontage> ReloadAnimMontage; 
+
+
+	FGenericTeamId TeamID;
+
+
+	/** Assigns Team Agent to given TeamID */
+	virtual void SetGenericTeamId(const FGenericTeamId& InTeamID) override
+	{
+		TeamID = InTeamID;
+	}
+
+	/** Retrieve team identifier in form of FGenericTeamId */
+	virtual FGenericTeamId GetGenericTeamId() const override
+	{
+		return TeamID;
+	}
+
+	/** Retrieved owner attitude toward given Other object */
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override
+	{
+		const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(&Other);
+		return OtherTeamAgent ? FGenericTeamId::GetAttitude(GetGenericTeamId(), OtherTeamAgent->GetGenericTeamId())
+			: ETeamAttitude::Hostile;
+	}
 };
 
 

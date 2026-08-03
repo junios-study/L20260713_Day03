@@ -14,6 +14,7 @@
 #include "MyWeaponBase.h"
 #include "GameFramework/DamageType.h"
 #include "Engine/DamageEvents.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 
 
 // Sets default values
@@ -35,6 +36,11 @@ AMyCharacter::AMyCharacter()
 	Weapon->SetupAttachment(GetMesh(), FName(TEXT("HandGrip_R")));
 
 	bArmed = true;
+
+	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSource"));
+	
+
+	SetGenericTeamId(1);
 }
 
 // Called when the game starts or when spawned
