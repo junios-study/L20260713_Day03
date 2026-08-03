@@ -24,3 +24,9 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		LeanValue = Character->LeanValue;
 	}
 }
+
+//Skeleton Notify
+void UMyAnimInstance::AnimNotify_ReloadComplete2(UAnimNotify* Notify)
+{
+	UE_LOG(LogTemp, Warning, TEXT("AnimNotify_ReloadComplete2"));
+}

@@ -39,4 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	float LeanValue = 0;
+
+	UFUNCTION()
+	void AnimNotify_ReloadComplete2(UAnimNotify* Notify);
 };
