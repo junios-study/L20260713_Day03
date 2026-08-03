@@ -32,6 +32,8 @@ public:
 
 	virtual void OnUnPossess() override;
 
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<UBehaviorTree> RunTree;
 

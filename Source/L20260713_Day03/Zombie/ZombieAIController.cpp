@@ -10,6 +10,7 @@
 AZombieAIController::AZombieAIController()
 {
 	Perception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception"));
+	SetPerceptionComponent(*Perception.Get());
 
 	UAISenseConfig_Sight* Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
 	Sight->SightRadius = 500.0f;
@@ -31,18 +32,25 @@ void AZombieAIController::OnPossess(APawn* InPawn)
 		RunBehaviorTree(RunTree);
 	}
 
-	Perception->OnTargetPerceptionForgotten.AddDynamic(this, &AZombieAIController::OnActorPerceptionForgetUpdated);
+	UE_LOG(LogTemp, Warning, TEXT("Perception %x"), GetPerceptionComponent());
 
-	Perception->OnPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionUpdated);
+	if (Perception)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Add %x"), GetPerceptionComponent());
 
+		Perception->OnTargetPerceptionForgotten.AddDynamic(this, &AZombieAIController::OnActorPerceptionForgetUpdated);
 
-	//
-	Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnActorPerceptionUpdated);
+		Perception->OnPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionUpdated);
 
-	Perception->OnTargetPerceptionInfoUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionInfoUpdated);
+		Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnActorPerceptionUpdated);
+
+		Perception->OnTargetPerceptionInfoUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionInfoUpdated);
+	}
 
 
 	SetGenericTeamId(3);
+
+
 }
 
 void AZombieAIController::OnUnPossess()
@@ -52,13 +60,22 @@ void AZombieAIController::OnUnPossess()
 	Super::OnUnPossess();
 }
 
+void AZombieAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+
+}
+
 void AZombieAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnPerceptionUpdated Update"));
+
 }
 
 void AZombieAIController::OnActorPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Perception Update %s"), *Actor->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionUpdated Update %s"), *Actor->GetName());
 }
 
 void AZombieAIController::OnActorPerceptionForgetUpdated(AActor* Actor)
