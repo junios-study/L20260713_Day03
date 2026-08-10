@@ -3,3 +3,11 @@
 
 #include "LobbyPC.h"
 
+void ALobbyPC::BeginPlay()
+{
+	Super::BeginPlay();
+
+
+
+	UE_LOG(LogTemp, Warning, TEXT("Lobby %d"), GetNetMode());
+}

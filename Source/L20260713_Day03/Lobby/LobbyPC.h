@@ -14,4 +14,6 @@ class L20260713_DAY03_API ALobbyPC : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void BeginPlay() override;
 };
