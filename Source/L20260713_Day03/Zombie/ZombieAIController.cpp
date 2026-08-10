@@ -87,6 +87,9 @@ void AZombieAIController::OnActorPerceptionUpdated(AActor* Actor, FAIStimulus St
 			{
 				Blackboard->SetValueAsObject(FName(TEXT("Player")), Player);
 				SetState(EZombieState::Chase);
+
+				UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionUpdated EZombieState::Chase"));
+
 			}
 		}
 		else
@@ -128,6 +131,8 @@ void AZombieAIController::SetState(EZombieState NewState)
 	if (Zombie)
 	{
 		Zombie->CurrentState = NewState;
+		Blackboard->SetValueAsEnum(FName(TEXT("CurrentState")), (uint8)NewState);
+
 	}
 }
 
