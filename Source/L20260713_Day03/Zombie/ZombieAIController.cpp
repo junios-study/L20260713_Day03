@@ -5,6 +5,10 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
+#include "../Base/MyCharacter.h"
+#include "Zombie.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Perception/AISenseConfig_Hearing.h"
 
 
 AZombieAIController::AZombieAIController()
@@ -34,11 +38,11 @@ void AZombieAIController::OnPossess(APawn* InPawn)
 
 	if (Perception)
 	{
-		Perception->OnTargetPerceptionForgotten.AddDynamic(this, &AZombieAIController::OnActorPerceptionForgetUpdated);
+		//Perception->OnTargetPerceptionForgotten.AddDynamic(this, &AZombieAIController::OnActorPerceptionForgetUpdated);
 
 		Perception->OnPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionUpdated);
 
-		//Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnActorPerceptionUpdated);
+		Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::OnActorPerceptionUpdated);
 
 		//Perception->OnTargetPerceptionInfoUpdated.AddDynamic(this, &AZombieAIController::OnPerceptionInfoUpdated);
 	}
@@ -72,6 +76,38 @@ void AZombieAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActo
 void AZombieAIController::OnActorPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionUpdated Update %s"), *Actor->GetName());
+
+	if (Stimulus.Type == UAISense::GetSenseID<UAISense_Sight>())
+	{
+		if (Stimulus.WasSuccessfullySensed())
+		{
+			AMyCharacter* Player = Cast<AMyCharacter>(Actor);
+			AZombie* Zombie = Cast<AZombie>(GetPawn());
+			if (Zombie && Player)
+			{
+				Blackboard->SetValueAsObject(FName(TEXT("Player")), Player);
+				SetState(EZombieState::Chase);
+			}
+		}
+		else
+		{
+			AMyCharacter* Player = Cast<AMyCharacter>(Actor);
+			AZombie* Zombie = Cast<AZombie>(GetPawn());
+			if (Zombie && Player)
+			{
+				Blackboard->SetValueAsObject(FName(TEXT("Player")), Player);
+				SetState(EZombieState::Normal);
+			}
+		}
+	}
+
+	if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
+	{
+		if (Stimulus.WasSuccessfullySensed())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionUpdated Hearing %s"), *Actor->GetName());
+		}
+	}
 }
 
 void AZombieAIController::OnActorPerceptionForgetUpdated(AActor* Actor)
@@ -88,7 +124,10 @@ void AZombieAIController::OnPerceptionInfoUpdated(const FActorPerceptionUpdateIn
 
 void AZombieAIController::SetState(EZombieState NewState)
 {
-	//BB Update
-	//Zombie State 업데이트
+	AZombie* Zombie = Cast<AZombie>(GetPawn());
+	if (Zombie)
+	{
+		Zombie->CurrentState = NewState;
+	}
 }
 
