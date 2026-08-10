@@ -106,9 +106,10 @@ void AZombieAIController::OnActorPerceptionUpdated(AActor* Actor, FAIStimulus St
 
 	if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionUpdated Hearing %s"), *Actor->GetName());
+ 
 		if (Stimulus.WasSuccessfullySensed())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("OnActorPerceptionUpdated Hearing %s"), *Actor->GetName());
 		}
 	}
 }

@@ -15,6 +15,7 @@
 #include "GameFramework/DamageType.h"
 #include "Engine/DamageEvents.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
 
 
 // Sets default values
@@ -86,6 +87,11 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::StartFire()
 {
+	UAISense_Hearing::ReportNoiseEvent(
+		GetWorld(),
+		GetActorLocation()
+		);
+
 	if (!bArmed)
 	{
 		return; 
