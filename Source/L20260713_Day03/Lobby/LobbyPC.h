@@ -16,4 +16,7 @@ class L20260713_DAY03_API ALobbyPC : public APlayerController
 	
 public:
 	virtual void BeginPlay() override;
+
+	virtual void OnPossess(APawn* aPawn) override;
+
 };

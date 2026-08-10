@@ -2,12 +2,23 @@
 
 
 #include "LobbyPC.h"
+#include "Kismet/KismetSystemLibrary.h"
+
 
 void ALobbyPC::BeginPlay()
 {
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("ALobbyPC::BeginPlay Begin"));
+
 	Super::BeginPlay();
 
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("ALobbyPC::BeginPlay End"));
+}
 
+void ALobbyPC::OnPossess(APawn* aPawn)
+{
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("ALobbyPC::OnPossess Begin"));
 
-	UE_LOG(LogTemp, Warning, TEXT("Lobby %d"), GetNetMode());
+	Super::OnPossess(aPawn);
+
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("ALobbyPC::OnPossess End"));
 }
