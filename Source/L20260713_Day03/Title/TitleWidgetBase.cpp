@@ -11,6 +11,8 @@ void UTitleWidgetBase::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+
+	StartServerButton = Cast<UButton>(GetWidgetFromName(TEXT("StartServerButton")));
 	if (StartServerButton)
 	{
 		StartServerButton->OnClicked.AddDynamic(this, &UTitleWidgetBase::StartServer);

@@ -23,7 +23,7 @@ public:
 	virtual void NativeConstruct() override;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TObjectPtr<UButton> StartServerButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))

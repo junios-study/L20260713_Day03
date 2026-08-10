@@ -14,4 +14,6 @@ class L20260713_DAY03_API ALobbyGM : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+//	virtual void PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage) override;
 };
