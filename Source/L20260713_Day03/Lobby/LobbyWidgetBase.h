@@ -41,7 +41,7 @@ public:
 	TObjectPtr<UTextBlock> LeftTimeText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
-	TObjectPtr<UTextBlock> ConnectionCountText;
+	TObjectPtr<UTextBlock> ConnectCountText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
 	TObjectPtr<UScrollBox> ChatScrollBox;

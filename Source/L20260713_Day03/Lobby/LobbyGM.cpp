@@ -56,6 +56,22 @@ void ALobbyGM::StartPlay()
 	//UKismetSystemLibrary::PrintString(GetWorld(), TEXT("ALobbyGM::StartPlay End"));
 }
 
+void ALobbyGM::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
+	GetWorld()->GetTimerManager().SetTimer(
+		LeftTimeHandle,
+		FTimerDelegate::CreateLambda([this]() {
+			CountDownLeftTime();
+		}),
+		1.0f,
+		true,
+		0.0f
+	);
+}
+
 void ALobbyGM::CountConnection()
 {
 	int Count = GetNumPlayers();

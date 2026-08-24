@@ -104,6 +104,25 @@ void ULobbyWidgetBase::ProcessStartServer()
 
 void ULobbyWidgetBase::ProcessSendMessage()
 {
+	ALobbyPC* PC = Cast<ALobbyPC>(GetOwningPlayer());
+	if (PC)
+	{
+		FText Text = ChatInput->GetText();
+		UGameInstance* GI = UGameplayStatics::GetGameInstance(GetWorld());
+		if (GI)
+		{
+			UDataGameInstanceSubsystem* MySubSystem = GI->GetSubsystem<UDataGameInstanceSubsystem>();
+			if (MySubSystem)
+			{
+				FString Temp = FString::Printf(TEXT("%s : %s"), *MySubSystem->UserID, *Text.ToString());
+
+				//call Local(Client)
+				//Execute Remote(Server)
+				PC->C2S_SendMessage(FText::FromString(Temp));
+				ChatInput->SetText(FText::FromString(TEXT("")));
+			}
+		}
+	}
 }
 
 void ULobbyWidgetBase::AddMessage(const FText& Text)
@@ -144,24 +163,30 @@ void ULobbyWidgetBase::AddMessage(const FText& Text)
 
 void ULobbyWidgetBase::ProcessChangeLeftTime(const int32 InLeftTime)
 {
-	FString Temp; 
-	if (InLeftTime <= 0)
+	if (LeftTimeText)
 	{
-		Temp = FString::Printf(TEXT("시작됩니다."));
-	}
-	else
-	{
-		Temp = FString::Printf(TEXT("%d초 남았습니다."), InLeftTime);
-	}
+		FString Temp;
+		if (InLeftTime <= 0)
+		{
+			Temp = FString::Printf(TEXT("시작됩니다."));
+		}
+		else
+		{
+			Temp = FString::Printf(TEXT("%d초 남았습니다."), InLeftTime);
+		}
 
-	LeftTimeText->SetText(FText::FromString(Temp));
+		LeftTimeText->SetText(FText::FromString(Temp));
+	}
 	
 }
 
 void ULobbyWidgetBase::ProcessChangeConnectionCount(const int32 InConnectionCount)
 {
-	FString Temp;
-	Temp = FString::Printf(TEXT("%d명 접속"), InConnectionCount);
-	ConnectionCountText->SetText(FText::FromString(Temp));
+	if (ConnectCountText)
+	{
+		FString Temp;
+		Temp = FString::Printf(TEXT("%d명 접속"), InConnectionCount);
+		ConnectCountText->SetText(FText::FromString(Temp));
+	}
 }
 

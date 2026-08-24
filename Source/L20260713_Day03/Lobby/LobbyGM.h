@@ -26,10 +26,18 @@ public:
 
 	virtual void StartPlay() override;
 
+	virtual void BeginPlay() override;
+
+	FTimerHandle LeftTimeHandle;
+
 
 	void CountConnection();
 
-
 	void CountDownLeftTime();
+
+
+	void StopTimer();
+
+	void StartGame();
 
 };
