@@ -14,4 +14,6 @@ class L20260713_DAY03_API ATitleGM : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+
 };

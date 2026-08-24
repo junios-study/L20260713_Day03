@@ -10,6 +10,7 @@
 #include "../DataGameInstanceSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/RichTextBlock.h"
+#include "LobbyGS.h"
 
 
 void ULobbyWidgetBase::NativeConstruct()
@@ -35,6 +36,13 @@ void ULobbyWidgetBase::NativeOnInitialized()
 	{
 		ChatInput->OnTextChanged.AddDynamic(this, &ULobbyWidgetBase::ProcessTextChanged);
 		ChatInput->OnTextCommitted.AddDynamic(this, &ULobbyWidgetBase::ProcessTextCommited);
+	}
+
+	ALobbyGS* GS = Cast<ALobbyGS>(UGameplayStatics::GetGameState(GetWorld()));
+	if (GS)
+	{
+		GS->OnChangeConnectionCount.AddDynamic(this, &ULobbyWidgetBase::ProcessChangeConnectionCount);
+		GS->OnChangeLeftTime.AddDynamic(this, &ULobbyWidgetBase::ProcessChangeLeftTime);
 	}
 
 }
@@ -102,29 +110,43 @@ void ULobbyWidgetBase::AddMessage(const FText& Text)
 {
 	if (ChatScrollBox)
 	{
-		//UTextBlock* NewMessageBlock = NewObject<UTextBlock>(ChatScrollBox);
-		//if (NewMessageBlock)
-		//{
-		//	NewMessageBlock->SetText(Text);
-		//	FSlateFontInfo FontInfo = NewMessageBlock->GetFont();
-		//	FontInfo.Size = 20.0f;
-		//	NewMessageBlock->SetFont(FontInfo);
-
-		//	ChatScrollBox->AddChild(NewMessageBlock);
-		//	ChatScrollBox->ScrollToEnd();
-		//}
-
-		URichTextBlock* NewMessageBlock = NewObject<URichTextBlock>(ChatScrollBox);
+		UTextBlock* NewMessageBlock = NewObject<UTextBlock>(ChatScrollBox);
 		if (NewMessageBlock)
 		{
 			NewMessageBlock->SetText(Text);
-			NewMessageBlock->SetAutoWrapText(true);
-			NewMessageBlock->SetWrapTextAt(ChatScrollBox->GetCachedGeometry().GetLocalSize().X);
-			NewMessageBlock->SetWrappingPolicy(ETextWrappingPolicy::AllowPerCharacterWrapping);
+			FSlateFontInfo FontInfo = NewMessageBlock->GetFont();
+			FontInfo.Size = 20.0f;
+			NewMessageBlock->SetFont(FontInfo);
 
 			ChatScrollBox->AddChild(NewMessageBlock);
 			ChatScrollBox->ScrollToEnd();
 		}
+
+		//URichTextBlock* NewMessageBlock = NewObject<URichTextBlock>(ChatScrollBox);
+		//if (NewMessageBlock)
+		//{
+		//	FString Temp = FString::Printf(TEXT("<RichText.Normal>%s</RichText>"), *Text.ToString());
+		//	NewMessageBlock->SetText(FText::FromString(Temp));
+		//	NewMessageBlock->SetAutoWrapText(true);
+		//	NewMessageBlock->SetWrapTextAt(ChatScrollBox->GetCachedGeometry().GetLocalSize().X);
+		//	NewMessageBlock->SetWrappingPolicy(ETextWrappingPolicy::AllowPerCharacterWrapping);
+
+		//	if (CharStyleSet)
+		//	{
+		//		NewMessageBlock->SetTextStyleSet(CharStyleSet);
+		//	}
+
+		//	ChatScrollBox->AddChild(NewMessageBlock);
+		//	ChatScrollBox->ScrollToEnd();
+		//}
 	}
+}
+
+void ULobbyWidgetBase::ProcessChangeLeftTime(const int32 InLeftTime)
+{
+}
+
+void ULobbyWidgetBase::ProcessChangeConnectionCount(const int32 InLeftTime)
+{
 }
 

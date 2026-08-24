@@ -67,6 +67,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AddMessage(const FText& Text);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Font")
+	TObjectPtr<UDataTable> CharStyleSet;
+
+
+	UFUNCTION()
+	void ProcessChangeLeftTime(const int32 InLeftTime);
+
+	UFUNCTION()
+	void ProcessChangeConnectionCount(const int32 InLeftTime);
 };
 
 

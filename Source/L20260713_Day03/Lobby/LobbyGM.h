@@ -26,4 +26,7 @@ public:
 
 	virtual void StartPlay() override;
 
+
+	void CountConnection();
+
 };
