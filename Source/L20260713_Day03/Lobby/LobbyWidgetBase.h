@@ -77,7 +77,7 @@ public:
 	void ProcessChangeLeftTime(const int32 InLeftTime);
 
 	UFUNCTION()
-	void ProcessChangeConnectionCount(const int32 InLeftTime);
+	void ProcessChangeConnectionCount(const int32 InConnectionCount);
 };
 
 

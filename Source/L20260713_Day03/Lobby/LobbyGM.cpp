@@ -68,5 +68,22 @@ void ALobbyGM::CountConnection()
 	if (GS)
 	{
 		GS->ConnectionCount = Count;
+
+		//ReplicatedUsing이지만 C++에서는 호출이 안됨.
+		GS->OnRep_ConnectionCount();
+	}
+}
+
+void ALobbyGM::CountDownLeftTime()
+{
+
+	ALobbyGS* GS = GetGameState<ALobbyGS>();
+	if (GS)
+	{
+		GS->LeftTime--;
+		GS->LeftTime = FMath::Clamp(GS->LeftTime, 0, 60);
+
+		//ReplicatedUsing이지만 C++에서는 호출이 안됨.
+		GS->OnRep_LeftTime();
 	}
 }

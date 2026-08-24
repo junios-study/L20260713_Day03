@@ -13,6 +13,12 @@ void ALobbyGS::OnRep_ConnectionCount()
 {
 	//UI 업데이트 
 	//UI 찾아서 위젯 값 넣어주고 화면 갱신
+	OnChangeConnectionCount.Broadcast(ConnectionCount);
+}
+
+void ALobbyGS::OnRep_LeftTime()
+{
+	OnChangeLeftTime.Broadcast(LeftTime);
 }
 
 void ALobbyGS::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

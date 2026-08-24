@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "LobbyWidgetBase.h"
@@ -144,9 +144,24 @@ void ULobbyWidgetBase::AddMessage(const FText& Text)
 
 void ULobbyWidgetBase::ProcessChangeLeftTime(const int32 InLeftTime)
 {
+	FString Temp; 
+	if (InLeftTime <= 0)
+	{
+		Temp = FString::Printf(TEXT("시작됩니다."));
+	}
+	else
+	{
+		Temp = FString::Printf(TEXT("%d초 남았습니다."), InLeftTime);
+	}
+
+	LeftTimeText->SetText(FText::FromString(Temp));
+	
 }
 
-void ULobbyWidgetBase::ProcessChangeConnectionCount(const int32 InLeftTime)
+void ULobbyWidgetBase::ProcessChangeConnectionCount(const int32 InConnectionCount)
 {
+	FString Temp;
+	Temp = FString::Printf(TEXT("%d명 접속"), InConnectionCount);
+	ConnectionCountText->SetText(FText::FromString(Temp));
 }
 

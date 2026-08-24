@@ -25,11 +25,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", ReplicatedUsing="OnRep_ConnectionCount")
 	int32 ConnectionCount = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", ReplicatedUsing="OnRep_LeftTime")
 	int32 LeftTime = 60;
 
 	UFUNCTION()
 	void OnRep_ConnectionCount();
+
+	UFUNCTION()
+	void OnRep_LeftTime();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
