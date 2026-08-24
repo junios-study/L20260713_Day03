@@ -6,6 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "LobbyWidgetBase.generated.h"
 
+
+class UScrollBox;
+class UTextBlock;
+class UEditableTextBox;
+class UButton;
+
+
 /**
  * 
  */
@@ -15,5 +22,26 @@ class L20260713_DAY03_API ULobbyWidgetBase : public UUserWidget
 	GENERATED_BODY()
 public:
 
-	
+	virtual void NativeConstruct() override;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	TObjectPtr<UButton> StartButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	TObjectPtr<UButton> ChatButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	TObjectPtr<UEditableTextBox> ChatInput;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	TObjectPtr<UTextBlock> LeftTimeText;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	TObjectPtr<UTextBlock> ConnectionCountText;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	TObjectPtr<UScrollBox> ChatScrollBox;
 };
+
+

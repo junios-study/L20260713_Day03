@@ -3,3 +3,6 @@
 
 #include "LobbyWidgetBase.h"
 
+void ULobbyWidgetBase::NativeConstruct()
+{
+}
