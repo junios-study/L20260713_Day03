@@ -9,6 +9,7 @@
 #include "LobbyPC.h"
 #include "../DataGameInstanceSubsystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/RichTextBlock.h"
 
 
 void ULobbyWidgetBase::NativeConstruct()
@@ -101,16 +102,29 @@ void ULobbyWidgetBase::AddMessage(const FText& Text)
 {
 	if (ChatScrollBox)
 	{
-		UTextBlock* NewMessageBlock = NewObject<UTextBlock>(ChatScrollBox);
+		//UTextBlock* NewMessageBlock = NewObject<UTextBlock>(ChatScrollBox);
+		//if (NewMessageBlock)
+		//{
+		//	NewMessageBlock->SetText(Text);
+		//	FSlateFontInfo FontInfo = NewMessageBlock->GetFont();
+		//	FontInfo.Size = 20.0f;
+		//	NewMessageBlock->SetFont(FontInfo);
+
+		//	ChatScrollBox->AddChild(NewMessageBlock);
+		//	ChatScrollBox->ScrollToEnd();
+		//}
+
+		URichTextBlock* NewMessageBlock = NewObject<URichTextBlock>(ChatScrollBox);
 		if (NewMessageBlock)
 		{
 			NewMessageBlock->SetText(Text);
-			FSlateFontInfo FontInfo = NewMessageBlock->GetFont();
-			FontInfo.Size = 20.0f;
-			NewMessageBlock->SetFont(FontInfo);
+			NewMessageBlock->SetAutoWrapText(true);
+			NewMessageBlock->SetWrapTextAt(ChatScrollBox->GetCachedGeometry().GetLocalSize().X);
+			NewMessageBlock->SetWrappingPolicy(ETextWrappingPolicy::AllowPerCharacterWrapping);
 
 			ChatScrollBox->AddChild(NewMessageBlock);
 			ChatScrollBox->ScrollToEnd();
 		}
 	}
 }
+
