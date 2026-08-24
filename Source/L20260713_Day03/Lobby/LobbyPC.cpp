@@ -102,3 +102,12 @@ void ALobbyPC::S2C_SendMessage_Implementation(const FText& Message)
 		LobbyWidgetObject->AddMessage(Message);
 	}
 }
+
+void ALobbyPC::S2C_ShowLoadingScreen_Implementation()
+{
+	if (LoadingScreenWidgetTemplate)
+	{
+		LoadingScreenWidgetObject = CreateWidget<UUserWidget>(this, LoadingScreenWidgetTemplate);
+		LoadingScreenWidgetObject->AddToViewport();
+	}
+}

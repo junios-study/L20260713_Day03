@@ -82,7 +82,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StopFire();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status", Replicated)
 	uint32 bFire : 1 = false;
 
 
@@ -96,20 +96,30 @@ public:
 
 	void Reload();
 
+	UFUNCTION(Server, Reliable)
+	void C2S_StartZoom();
+	void C2S_StartZoom_Implementation();
+
+
+	UFUNCTION(Server, Reliable)
+	void C2S_StopZoom();
+	void C2S_StopZoom_Implementation();
+
+
 
 	void Lean(const FInputActionValue& Value);
 
 	//void StopLean(const FInputActionValue& Value);
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", Replicated)
 	uint32 bArmed : 1 = false;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", Replicated)
 	uint32 bZoom : 1 = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat", Replicated)
 	float LeanValue = 0;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
@@ -158,6 +168,9 @@ public:
 		return OtherTeamAgent ? FGenericTeamId::GetAttitude(GetGenericTeamId(), OtherTeamAgent->GetGenericTeamId())
 			: ETeamAttitude::Hostile;
 	}
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 };
 
 

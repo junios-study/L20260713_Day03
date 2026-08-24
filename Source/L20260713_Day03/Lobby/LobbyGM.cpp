@@ -4,6 +4,7 @@
 #include "LobbyGM.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "LobbyGS.h"
+#include "LobbyPC.h"
 
 void ALobbyGM::PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage)
 {
@@ -101,5 +102,35 @@ void ALobbyGM::CountDownLeftTime()
 
 		//ReplicatedUsing이지만 C++에서는 호출이 안됨.
 		GS->OnRep_LeftTime();
+
+		if (GS->LeftTime <= 0)
+		{
+			StartGame();
+		}
 	}
+}
+
+void ALobbyGM::StopTimer()
+{
+	GetWorldTimerManager().ClearTimer(
+		LeftTimeHandle
+	);
+}
+
+void ALobbyGM::StartGame()
+{
+	StopTimer();
+	for (auto Iter = GetWorld()->GetPlayerControllerIterator(); Iter; ++Iter)
+	{
+		ALobbyPC* PC = Cast<ALobbyPC>(*Iter);
+		if (PC)
+		{
+			PC->S2C_ShowLoadingScreen();
+		}
+	}
+
+
+	GetWorld()->ServerTravel(TEXT("Lvl_ThirdPerson"));
+
+
 }

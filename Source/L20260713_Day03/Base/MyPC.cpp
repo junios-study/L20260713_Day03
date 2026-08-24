@@ -25,5 +25,9 @@ void AMyPC::BeginPlay()
 				InputSystem->AddMappingContext(InputMapping.LoadSynchronous(), 0);
 			}
 		}
+
 	}
+
+	SetInputMode(FInputModeGameOnly());
+	bShowMouseCursor = false;
 }

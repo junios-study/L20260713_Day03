@@ -22,6 +22,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TObjectPtr<class ULobbyWidgetBase> LobbyWidgetObject;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<class UUserWidget> LoadingScreenWidgetTemplate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TObjectPtr<class UUserWidget> LoadingScreenWidgetObject;
+
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void C2S_SendMessage(const FText& Message); //UHT 생성 후, 실행 위치 확인 후 전송
@@ -31,6 +37,10 @@ public:
 	UFUNCTION(Client, Unreliable)
 	void S2C_SendMessage(const FText& Message);
 	void S2C_SendMessage_Implementation(const FText& Message);
+
+	UFUNCTION(Client, Reliable)
+	void S2C_ShowLoadingScreen();
+	void S2C_ShowLoadingScreen_Implementation();
 
 
 };

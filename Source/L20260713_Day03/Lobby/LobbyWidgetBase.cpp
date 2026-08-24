@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/RichTextBlock.h"
 #include "LobbyGS.h"
+#include "LobbyGM.h"
 
 
 void ULobbyWidgetBase::NativeConstruct()
@@ -100,6 +101,11 @@ void ULobbyWidgetBase::ProcessTextChanged(const FText& Text)
 
 void ULobbyWidgetBase::ProcessStartServer()
 {
+	ALobbyGM* GM = Cast<ALobbyGM>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GM)
+	{
+		GM->StartGame();
+	}
 }
 
 void ULobbyWidgetBase::ProcessSendMessage()

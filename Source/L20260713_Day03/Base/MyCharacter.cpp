@@ -16,6 +16,7 @@
 #include "Engine/DamageEvents.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Hearing.h"
+#include "Net/UnrealNetwork.h"
 
 
 // Sets default values
@@ -148,11 +149,21 @@ void AMyCharacter::Move(const FInputActionValue& Value)
 
 void AMyCharacter::StartZoom()
 {
+	C2S_StartZoom();
+}
+
+void AMyCharacter::StopZoom()
+{
+	C2S_StopZoom();
+}
+
+void AMyCharacter::C2S_StartZoom_Implementation()
+{
 	bZoom = true;
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 }
 
-void AMyCharacter::StopZoom()
+void AMyCharacter::C2S_StopZoom_Implementation()
 {
 	bZoom = false;
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
@@ -225,9 +236,22 @@ void AMyCharacter::SpawnHitEffect(const FHitResult& InResult)
 	);
 }
 
+void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMyCharacter, bFire);
+	DOREPLIFETIME(AMyCharacter, bArmed);
+	DOREPLIFETIME(AMyCharacter, bZoom);
+	DOREPLIFETIME(AMyCharacter, LeanValue);
+}
+
 void AMyCharacter::Reload()
 {
 	PlayAnimMontage(ReloadAnimMontage);
 }
+
+
+
 
 
