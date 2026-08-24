@@ -6,8 +6,9 @@
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 #include "Components/EditableTextBox.h"
-#include "LobbyWidgetBase.h"
 #include "LobbyPC.h"
+#include "../DataGameInstanceSubsystem.h"
+#include "Kismet/GameplayStatics.h"
 
 
 void ULobbyWidgetBase::NativeConstruct()
@@ -55,8 +56,22 @@ void ULobbyWidgetBase::ProcessTextCommited(const FText& Text, ETextCommit::Type 
 			ALobbyPC* PC = Cast<ALobbyPC>(GetOwningPlayer());
 			if (PC)
 			{
-				PC->C2S_SendMessage(Text);
-				ChatInput->SetText(FText::FromString(TEXT("")));
+				UGameInstance* GI = UGameplayStatics::GetGameInstance(GetWorld());
+				if (GI)
+				{
+					UDataGameInstanceSubsystem* MySubSystem = GI->GetSubsystem<UDataGameInstanceSubsystem>();
+					if (MySubSystem)
+					{
+						FString Temp = FString::Printf(TEXT("%s : %s"), *MySubSystem->UserID, *Text.ToString());
+
+						//call Local(Client)
+						//Execute Remote(Server)
+						PC->C2S_SendMessage(FText::FromString(Temp));
+						ChatInput->SetText(FText::FromString(TEXT("")));
+					}
+				}
+
+
 			}
 		}
 		break;
@@ -80,4 +95,22 @@ void ULobbyWidgetBase::ProcessStartServer()
 
 void ULobbyWidgetBase::ProcessSendMessage()
 {
+}
+
+void ULobbyWidgetBase::AddMessage(const FText& Text)
+{
+	if (ChatScrollBox)
+	{
+		UTextBlock* NewMessageBlock = NewObject<UTextBlock>(ChatScrollBox);
+		if (NewMessageBlock)
+		{
+			NewMessageBlock->SetText(Text);
+			FSlateFontInfo FontInfo = NewMessageBlock->GetFont();
+			FontInfo.Size = 20.0f;
+			NewMessageBlock->SetFont(FontInfo);
+
+			ChatScrollBox->AddChild(NewMessageBlock);
+			ChatScrollBox->ScrollToEnd();
+		}
+	}
 }

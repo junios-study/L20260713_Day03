@@ -28,5 +28,9 @@ public:
 	bool C2S_SendMessage_Validate(const FText& Message);
 	void C2S_SendMessage_Implementation(const FText& Message); //角力 角青 肺流, 快府 备泅
 
+	UFUNCTION(Client, Unreliable)
+	void S2C_SendMessage(const FText& Message);
+	void S2C_SendMessage_Implementation(const FText& Message);
+
 
 };

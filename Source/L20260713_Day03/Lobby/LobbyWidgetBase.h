@@ -64,6 +64,9 @@ public:
 
 	UFUNCTION()
 	void ProcessSendMessage();
+
+	UFUNCTION(BlueprintCallable)
+	void AddMessage(const FText& Text);
 };
 
 
