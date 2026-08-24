@@ -24,6 +24,9 @@ public:
 
 	virtual void NativeConstruct() override;
 
+	virtual void NativeOnInitialized() override;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
 	TObjectPtr<UButton> StartButton;
@@ -42,6 +45,20 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
 	TObjectPtr<UScrollBox> ChatScrollBox;
+
+	void ShowStartButton(bool IsShow);
+
+	UFUNCTION()
+	void ProcessTextCommited(const FText& Text, ETextCommit::Type CommitMethod);
+
+	UFUNCTION()
+	void ProcessTextChanged(const FText& Text);
+
+	UFUNCTION()
+	void ProcessStartServer();
+
+	UFUNCTION()
+	void ProcessSendMessage();
 };
 
 
