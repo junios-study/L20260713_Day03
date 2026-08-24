@@ -22,3 +22,12 @@ void ALobbyPC::OnPossess(APawn* aPawn)
 
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("ALobbyPC::OnPossess End"));
 }
+
+bool ALobbyPC::C2S_SendMessage_Validate(const FText& Message)
+{
+	return true;
+}
+
+void ALobbyPC::C2S_SendMessage_Implementation(const FText& Message)
+{
+}

@@ -6,6 +6,8 @@
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 #include "Components/EditableTextBox.h"
+#include "LobbyWidgetBase.h"
+#include "LobbyPC.h"
 
 
 void ULobbyWidgetBase::NativeConstruct()
@@ -37,10 +39,35 @@ void ULobbyWidgetBase::NativeOnInitialized()
 
 void ULobbyWidgetBase::ShowStartButton(bool IsShow)
 {
+	PlayShowStartButton();
+}
+
+void ULobbyWidgetBase::PlayShowStartButton_Implementation()
+{
 }
 
 void ULobbyWidgetBase::ProcessTextCommited(const FText& Text, ETextCommit::Type CommitMethod)
 {
+	switch (CommitMethod)
+	{
+		case ETextCommit::OnEnter:
+		{
+			ALobbyPC* PC = Cast<ALobbyPC>(GetOwningPlayer());
+			if (PC)
+			{
+				PC->C2S_SendMessage(Text);
+				ChatInput->SetText(FText::FromString(TEXT("")));
+			}
+		}
+		break;
+
+		case ETextCommit::OnCleared:
+		{
+			ChatInput->SetUserFocus(GetOwningPlayer());
+		}
+		break;
+	}
+
 }
 
 void ULobbyWidgetBase::ProcessTextChanged(const FText& Text)

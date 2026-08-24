@@ -46,7 +46,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
 	TObjectPtr<UScrollBox> ChatScrollBox;
 
+	UFUNCTION(BlueprintCallable)
 	void ShowStartButton(bool IsShow);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void PlayShowStartButton();
+	void PlayShowStartButton_Implementation();
 
 	UFUNCTION()
 	void ProcessTextCommited(const FText& Text, ETextCommit::Type CommitMethod);
