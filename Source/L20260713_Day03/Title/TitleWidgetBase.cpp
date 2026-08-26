@@ -100,6 +100,13 @@ void UTitleWidgetBase::Login()
 		return;
 	}
 
+	if (bRequestInFlight)
+	{
+		return;
+	}
+
+	ClearLoginState();
+
 	SaveData();
 
 	if (UWebApiSubsystem* WebApi = GetWebApi())
@@ -108,6 +115,7 @@ void UTitleWidgetBase::Login()
 		WebApi->RequestLogin(ServerIP->GetText().ToString(),
 			UserID->GetText().ToString(),
 			Password->GetText().ToString());
+		bRequestInFlight = true;
 	}
 }
 
@@ -118,6 +126,13 @@ void UTitleWidgetBase::SignUp()
 		return;
 	}
 
+	if (bRequestInFlight)
+	{
+		return;
+	}
+
+	ClearLoginState();
+
 	SaveData();
 
 	if (UWebApiSubsystem* WebApi = GetWebApi())
@@ -126,11 +141,14 @@ void UTitleWidgetBase::SignUp()
 		WebApi->RequestSignUp(ServerIP->GetText().ToString(),
 			UserID->GetText().ToString(),
 			Password->GetText().ToString());
+		bRequestInFlight = true;
 	}
 }
 
 void UTitleWidgetBase::ProcessLoginResult(const bool bInSuccess, const FString& InMessage)
 {
+	bRequestInFlight = false;
+
 	if (!bInSuccess)
 	{
 		SetInfoText(InMessage);
@@ -157,6 +175,8 @@ void UTitleWidgetBase::ProcessLoginResult(const bool bInSuccess, const FString& 
 
 void UTitleWidgetBase::ProcessSignUpResult(const bool bInSuccess, const FString& InMessage)
 {
+	bRequestInFlight = false;
+
 	SetInfoText(bInSuccess ? TEXT("가입이 완료되었습니다. 로그인해 주세요.") : InMessage);
 }
 
@@ -176,6 +196,29 @@ bool UTitleWidgetBase::IsLoggedIn() const
 
 	UDataGameInstanceSubsystem* Data = GI->GetSubsystem<UDataGameInstanceSubsystem>();
 	return Data && Data->bLoggedIn;
+}
+
+void UTitleWidgetBase::ClearLoginState()
+{
+	UGameInstance* GI = GetGameInstance();
+	UDataGameInstanceSubsystem* Data = GI ? GI->GetSubsystem<UDataGameInstanceSubsystem>() : nullptr;
+	if (Data)
+	{
+		Data->bLoggedIn = false;
+		Data->Idx = 0;
+		Data->Nickname.Empty();
+		Data->Level = 0;
+	}
+
+	if (StartServerButton)
+	{
+		StartServerButton->SetIsEnabled(false);
+	}
+
+	if (ConnectServerButton)
+	{
+		ConnectServerButton->SetIsEnabled(false);
+	}
 }
 
 void UTitleWidgetBase::SetInfoText(const FString& InMessage)
@@ -204,6 +247,10 @@ bool UTitleWidgetBase::ValidateInput()
 		SetInfoText(TEXT("서버 주소를 입력해 주세요"));
 		return false;
 	}
+
+	UserID->SetText(UserID->GetText().TrimPrecedingAndTrailing(UserID->GetText()));
+	Password->SetText(Password->GetText().TrimPrecedingAndTrailing(Password->GetText()));
+	ServerIP->SetText(ServerIP->GetText().TrimPrecedingAndTrailing(ServerIP->GetText()));
 
 	return true;
 }

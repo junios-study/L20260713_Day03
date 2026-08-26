@@ -13,7 +13,7 @@
 
 namespace
 {
-	constexpr int32 WebServerPort = 8000;
+	constexpr int32 WebServerPort = 8080;
 }
 
 void UWebApiSubsystem::RequestLogin(const FString& InServerIP, const FString& InUserID, const FString& InPassword)
@@ -39,6 +39,7 @@ void UWebApiSubsystem::SendAuthRequest(const FString& InServerIP, const FString&
 	FJsonSerializer::Serialize(JsonObject, Writer);
 
 	const FString Url = FString::Printf(TEXT("http://%s:%d%s"), *InServerIP, WebServerPort, *InPath);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *Url);
 
 	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
 	Request->SetURL(Url);

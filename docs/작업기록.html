@@ -101,7 +101,7 @@ footer{margin-top:4rem; padding-top:1.25rem; border-top:1px solid var(--line); c
 <li><strong>DB 스키마 변경 없음</strong> — <code>user_id</code>에 이미 <code>user_id_UNIQUE</code> 인덱스가 있어 중복 가입은 DB가 막는다.</li>
 <li><strong>회원가입 입력은 <code>user_id</code>, <code>passwd</code> 둘뿐</strong> — 서버가 <code>nickname = user_id</code>, <code>level = 1</code>을 채운다. 닉네임 입력칸을 만들지 않는다.</li>
 <li><strong>가입 후 자동 로그인 안 함</strong> — 가입과 로그인은 분리된 동작이다.</li>
-<li><strong>포트 8000 고정</strong> — 클라이언트 URL은 <code>http://{ServerIP}:8000</code>. ServerIP는 Title 화면의 기존 입력칸을 재사용한다.</li>
+<li><strong>포트 8080 고정</strong> — 클라이언트 URL은 <code>http://{ServerIP}:8080</code>. (원래 8000이었으나 언리얼 MCP 플러그인이 8000을 점유해 변경) ServerIP는 Title 화면의 기존 입력칸을 재사용한다.</li>
 <li><strong>pytest 미사용</strong> — 검증은 <code>/docs</code>와 수동 확인으로 한다.</li>
 <li><strong>가상환경은 <code>Server/.venv</code>에만</strong> — 전역 설치 금지. git에서 제외.</li>
 </ul>
@@ -212,8 +212,8 @@ Source/L20260713_Day03/
 <h2>8. Task 7 &mdash; 사람이 직접 할 일</h2>
 <p>언리얼 에디터 위젯 배치와 PIE 실행은 자동화할 수 없다. Task 1~6이 끝나면 아래를 순서대로 확인한다.</p>
 <p><strong>사전 준비:</strong> 서버를 켜둔다.</p>
-<pre><code>cd C:\Work\L20260713_Day03\Server
-.venv\Scripts\python.exe -m uvicorn main:app --port 8000</code></pre>
+<pre><code>C:\Work\L20260713_Day03\Server\run.bat</code></pre>
+<p><code>run.bat</code>은 어느 위치에서 실행해도 <code>Server/</code>로 이동해 venv 파이썬으로 8080 포트에 서버를 띄운다. 멈출 때는 <code>Ctrl+C</code>.</p>
 
 <h3>8.1 위젯 배치</h3>
 <p><code>Content/Blueprints/Title/UI/WBP_Title</code>을 열고 디자이너에 아래를 추가한다. <strong>이름은 대소문자까지 정확히</strong> 맞춰야 한다.</p>

@@ -79,4 +79,8 @@ private:
 
 	void SetInfoText(const FString& InMessage);
 
+	void ClearLoginState();
+
+	bool bRequestInFlight = false;
+
 };
