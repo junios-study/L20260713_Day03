@@ -18,7 +18,7 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Direction = UKismetAnimationLibrary::CalculateDirection(Character->GetCharacterMovement()->Velocity, Character->GetActorRotation());
 		bArmed = Character->bArmed;
 
-		AimPitch = Character->GetBaseAimRotation().Pitch;
+		AimPitch = Character->GetAimOffset().Pitch;
 
 		bZoom = Character->bZoom;
 		LeanValue = Character->LeanValue;

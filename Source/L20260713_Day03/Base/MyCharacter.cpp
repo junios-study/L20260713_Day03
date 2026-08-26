@@ -50,6 +50,8 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+	EquipItem();
 }
 
 // Called every frame
@@ -88,10 +90,6 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::StartFire()
 {
-	UAISense_Hearing::ReportNoiseEvent(
-		GetWorld(),
-		GetActorLocation()
-		);
 
 	if (!bArmed)
 	{
@@ -123,6 +121,7 @@ void AMyCharacter::StopFire()
 		ChildWeapon->StopFire();
 	}
 }
+
 
 void AMyCharacter::Look(const FInputActionValue& Value)
 {
@@ -244,6 +243,27 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, bArmed);
 	DOREPLIFETIME(AMyCharacter, bZoom);
 	DOREPLIFETIME(AMyCharacter, LeanValue);
+}
+
+FRotator AMyCharacter::GetAimOffset() const
+{
+	const FVector AimDirWS = GetBaseAimRotation().Vector();
+	const FVector AimDirLS = ActorToWorld().InverseTransformVectorNoScale(AimDirWS);
+	const FRotator AimRotLS = AimDirLS.Rotation();
+
+	return AimRotLS;
+}
+
+void AMyCharacter::EquipItem()
+{
+	Weapon->SetChildActorClass(WeaponTemplate);
+	AMyWeaponBase* ChildWeapon = Cast<AMyWeaponBase>(Weapon->GetChildActor());
+	if (ChildWeapon)
+	{
+		ChildWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("HandGrip_R")));
+		ChildWeapon->SetOwner(this);
+	}
+
 }
 
 void AMyCharacter::Reload()

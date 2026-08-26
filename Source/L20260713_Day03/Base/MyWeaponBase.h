@@ -49,19 +49,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TObjectPtr<UParticleSystem> MuzzleFlash;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	uint8 bFullAuto : 1 = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	uint8 bCanFire : 1 = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	float FireRate = 0.15f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	float FiringRate = 0.01f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	float CoolDown = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
@@ -73,6 +73,22 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StopFire();
+
+	UFUNCTION(Server, Reliable)
+	void C2S_StartFire();
+	void C2S_StartFire_Implementation();
+
+
+	UFUNCTION(Server, Reliable)
+	void C2S_StopFire();
+	void C2S_StopFire_Implementation();
+
+	UFUNCTION(Server, Reliable)
+	void C2S_SpawnBullet(const FVector& Start, const FRotator& SpawnRotator);
+	void C2S_SpawnBullet_Implementation(const FVector& Start, const FRotator& SpawnRotator);
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 
 	UFUNCTION(BlueprintCallable)

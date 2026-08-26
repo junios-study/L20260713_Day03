@@ -82,6 +82,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StopFire();
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status", Replicated)
 	uint32 bFire : 1 = false;
 
@@ -170,6 +171,13 @@ public:
 	}
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	FRotator GetAimOffset() const;
+
+	void EquipItem();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TSubclassOf<class AMyWeaponBase> WeaponTemplate;
 
 };
 

@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "ProjectileBase.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AMyWeaponBase::AMyWeaponBase()
@@ -19,6 +20,14 @@ AMyWeaponBase::AMyWeaponBase()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	RootComponent = Mesh;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	bNetLoadOnClient = true;
+	bNetUseOwnerRelevancy = true;
+
+
+
 }
 
 // Called when the game starts or when spawned
@@ -35,14 +44,18 @@ void AMyWeaponBase::Tick(float DeltaTime)
 
 	CoolDown = FMath::Max(CoolDown - DeltaTime, 0);
 
-	if (bCanFire)
+
+	if (!HasAuthority())
 	{
-		if (CoolDown <= 0.f)
+		if (bCanFire)
 		{
-			Fire();
-			MakeMuzzleFlash();
-			CoolDown = FiringRate;
-			//UE_LOG(LogTemp, Warning, TEXT("Fire"));
+			if (CoolDown <= 0.f)
+			{
+				Fire();
+				MakeMuzzleFlash();
+				CoolDown = FiringRate;
+				//UE_LOG(LogTemp, Warning, TEXT("Fire"));
+			}
 		}
 	}
 
@@ -55,6 +68,8 @@ void AMyWeaponBase::StartFire()
 
 	bCanFire = true;
 	FiringRate = FireRate;
+
+	C2S_StartFire();
 }
 
 
@@ -62,7 +77,37 @@ void AMyWeaponBase::StopFire()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Stop Fire"));
 
+
 	bCanFire = false;
+
+	C2S_StopFire();
+
+}
+
+void AMyWeaponBase::C2S_StartFire_Implementation()
+{
+	bCanFire = true;
+	FiringRate = FireRate;
+}
+
+void AMyWeaponBase::C2S_StopFire_Implementation()
+{
+	bCanFire = false;
+}
+
+void AMyWeaponBase::C2S_SpawnBullet_Implementation(const FVector& Start, const FRotator& SpawnRotator)
+{
+}
+
+void AMyWeaponBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMyWeaponBase, bFullAuto);
+	DOREPLIFETIME(AMyWeaponBase, bCanFire);
+	DOREPLIFETIME(AMyWeaponBase, FireRate);
+	DOREPLIFETIME(AMyWeaponBase, FiringRate);
+	DOREPLIFETIME(AMyWeaponBase, CoolDown);
 }
 
 void AMyWeaponBase::Fire()
