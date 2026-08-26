@@ -139,6 +139,11 @@ public:
 	UFUNCTION()
 	void SpawnHitEffect(const FHitResult& InResult);
 
+	UFUNCTION(NetMulticast, Unreliable)
+	void S2A_SpawnHitEffect(const FHitResult& InResult);
+	void S2A_SpawnHitEffect_Implementation(const FHitResult& InResult);
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TObjectPtr<UAnimMontage> HitReactionAnimMontage;

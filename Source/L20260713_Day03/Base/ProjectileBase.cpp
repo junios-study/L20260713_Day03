@@ -24,6 +24,11 @@ AProjectileBase::AProjectileBase()
 	Movement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement"));
 	Movement->MaxSpeed = 10000.0f;
 	Movement->InitialSpeed = 10000.0f;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	bNetLoadOnClient = true;
+	bNetUseOwnerRelevancy = true;
 }
 
 // Called when the game starts or when spawned
@@ -56,16 +61,21 @@ void AProjectileBase::ProcessHit(UPrimitiveComponent* HitComponent, AActor* Othe
 
 	MadeDecal->SetFadeScreenSize(0.005f);
 
-	//맞았을때
-	UGameplayStatics::ApplyPointDamage(
-		Hit.GetActor(),
-		1.0f,
-		-Hit.ImpactNormal,
-		Hit,
-		nullptr,
-		nullptr,
-		DamageType
-	);
+
+	if (HasAuthority())
+	{
+		//맞았을때
+		UGameplayStatics::ApplyPointDamage(
+			Hit.GetActor(),
+			1.0f,
+			-Hit.ImpactNormal,
+			Hit,
+			nullptr,
+			nullptr,
+			DamageType
+		);
+	}
+
 
 	Destroy();
 }

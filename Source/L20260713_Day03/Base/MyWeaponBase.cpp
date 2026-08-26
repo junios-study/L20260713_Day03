@@ -45,20 +45,25 @@ void AMyWeaponBase::Tick(float DeltaTime)
 	CoolDown = FMath::Max(CoolDown - DeltaTime, 0);
 
 
-	if (!HasAuthority())
+	//플레이어가 조정하는 폰에 달린 총에서만 실행 되게 
+	AMyCharacter* Character = Cast<AMyCharacter>(GetOwner());
+	if (Character)
 	{
-		if (bCanFire)
+		APlayerController* PC = Cast<APlayerController>(Character->GetController());
+		if (PC && PC->IsLocalController())
 		{
-			if (CoolDown <= 0.f)
+			if (bCanFire)
 			{
-				Fire();
-				MakeMuzzleFlash();
-				CoolDown = FiringRate;
-				//UE_LOG(LogTemp, Warning, TEXT("Fire"));
+				if (CoolDown <= 0.f)
+				{
+					Fire();
+					MakeMuzzleFlash();
+					CoolDown = FiringRate;
+					//UE_LOG(LogTemp, Warning, TEXT("Fire"));
+				}
 			}
 		}
 	}
-
 }
 
 
@@ -97,6 +102,10 @@ void AMyWeaponBase::C2S_StopFire_Implementation()
 
 void AMyWeaponBase::C2S_SpawnBullet_Implementation(const FVector& Start, const FRotator& SpawnRotator)
 {
+	GetWorld()->SpawnActor<AProjectileBase>(ProjectileTemplate,
+		Start,
+		SpawnRotator
+	);
 }
 
 void AMyWeaponBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -130,7 +139,8 @@ void AMyWeaponBase::MakeMuzzleFlash()
 	UGameplayStatics::SpawnEmitterAtLocation(
 		GetWorld(),
 		MuzzleFlash,
-		Mesh->GetSocketLocation(TEXT("Muzzle"))
+		Mesh->GetSocketLocation(TEXT("Muzzle")),
+		Mesh->GetSocketRotation(TEXT("Muzzle"))
 	);
 }
 
@@ -208,12 +218,7 @@ bool AMyWeaponBase::LineTrace(FHitResult& OutResult)
 		Start, End + (UKismetMathLibrary::RandomUnitVector() * 0.3f)
 	);
 
-	GetWorld()->SpawnActor<AProjectileBase>(ProjectileTemplate,
-		Start,
-		SpawnRotator
-	);
-
-
+	C2S_SpawnBullet(Start, SpawnRotator);
 
 
 

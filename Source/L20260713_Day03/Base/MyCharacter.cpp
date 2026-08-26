@@ -228,6 +228,12 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 void AMyCharacter::SpawnHitEffect(const FHitResult& InResult)
 {
+	//실행이 서버에서만 된다.
+	S2A_SpawnHitEffect(InResult);
+}
+
+void AMyCharacter::S2A_SpawnHitEffect_Implementation(const FHitResult& InResult)
+{
 	UGameplayStatics::SpawnEmitterAtLocation(
 		GetWorld(),
 		HitEffect,
