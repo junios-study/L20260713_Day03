@@ -8,6 +8,8 @@
 
 class UButton;
 class UEditableTextBox;
+class UTextBlock;
+class UWebApiSubsystem;
 
 
 /**
@@ -26,17 +28,26 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TObjectPtr<UButton> StartServerButton;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
 	TObjectPtr<UButton> ConnectServerButton;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> UserID;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> Password;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> ServerIP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
+	TObjectPtr<UButton> LoginButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
+	TObjectPtr<UButton> SignUpButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (BindWidget))
+	TObjectPtr<UTextBlock> InfoText;
 
 	UFUNCTION()
 	void StartServer();
@@ -46,6 +57,30 @@ public:
 
 	void SaveData();
 
+	UFUNCTION()
+	void Login();
 
+	UFUNCTION()
+	void SignUp();
+
+	UFUNCTION()
+	void ProcessLoginResult(const bool bInSuccess, const FString& InMessage);
+
+	UFUNCTION()
+	void ProcessSignUpResult(const bool bInSuccess, const FString& InMessage);
+
+private:
+
+	UWebApiSubsystem* GetWebApi() const;
+
+	bool IsLoggedIn() const;
+
+	bool ValidateInput();
+
+	void SetInfoText(const FString& InMessage);
+
+	void ClearLoginState();
+
+	bool bRequestInFlight = false;
 
 };
