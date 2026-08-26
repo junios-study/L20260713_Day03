@@ -15,7 +15,10 @@ public class L20260713_Day03 : ModuleRules
 			"InputCore",
             "EnhancedInput",
             "AnimGraphRuntime",
-			"UMG"
+			"UMG",
+			"HTTP",
+			"Json",
+			"JsonUtilities"
 
         });
 

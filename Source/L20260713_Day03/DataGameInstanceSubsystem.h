@@ -27,5 +27,17 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	FString ServerIP;
-	
+
+	UPROPERTY(BlueprintReadOnly, Category = "Data")
+	bool bLoggedIn = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Data")
+	int32 Idx = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Data")
+	FString Nickname;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Data")
+	int32 Level = 0;
+
 };
