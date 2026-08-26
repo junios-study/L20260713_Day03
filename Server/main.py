@@ -43,3 +43,30 @@ def signup(req: AuthRequest):
     return AuthResponse(
         result=True, idx=new_idx, nickname=req.user_id, level=1
     )
+
+
+@app.post("/login", response_model=AuthResponse)
+def login(req: AuthRequest):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT idx, nickname, level FROM member"
+                " WHERE user_id = %s AND passwd = %s",
+                (req.user_id, req.passwd),
+            )
+            row = cur.fetchone()
+    finally:
+        conn.close()
+
+    if row is None:
+        return AuthResponse(
+            result=False, message="아이디 또는 비밀번호가 올바르지 않습니다"
+        )
+
+    return AuthResponse(
+        result=True,
+        idx=row["idx"],
+        nickname=row["nickname"],
+        level=row["level"],
+    )
