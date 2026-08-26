@@ -260,12 +260,24 @@ UPROPERTY(BlueprintReadOnly, Category = "Data") int32   Level = 0;</code></pre>
 </ul>
 
 <div class="box warn">
-  <p><strong>기존 코드에서 발견한 점 (이번에 수정하지 않고 보고만 합니다)</strong></p>
-  <p><code>TitleWidgetBase.h</code>의 <code>UserID</code>, <code>Password</code>, <code>ServerIP</code>, <code>ConnectServerButton</code>에 붙은
-  <code>meta = (WidgetBind)</code>는 언리얼이 인식하는 지정자가 아닙니다. 정식 명칭은 <code>meta = (BindWidget)</code>입니다.
-  현재 정상 동작한다면 블루프린트 디폴트에서 값을 넣어주고 있을 가능성이 큽니다.</p>
-  <p>그래서 신규 위젯은 <strong>확실히 동작이 검증된 <code>StartServerButton</code> 방식(<code>GetWidgetFromName</code>)</strong>을 따릅니다.
-  기존 줄은 요청 없이 건드리지 않습니다. 고칠지 여부는 알려주세요.</p>
+  <p><strong>바인딩 지정자 오타 &mdash; 수정 완료 (커밋 <code>d568bf4</code>)</strong></p>
+  <p><code>TitleWidgetBase.h</code>의 <code>UserID</code>, <code>Password</code>, <code>ServerIP</code>, <code>ConnectServerButton</code>에 붙어 있던
+  <code>meta = (WidgetBind)</code>는 언리얼이 인식하는 지정자가 아니어서 해당 위젯들이 바인딩되지 않은 채 남아 있었습니다.
+  정식 지정자인 <code>meta = (BindWidget)</code>으로 고쳤습니다.</p>
+  <p><strong>확인이 필요한 부작용</strong> &mdash; <code>BindWidget</code>은 이름이 일치하는 위젯이 블루프린트에 반드시 있어야 합니다.
+  <code>WBP_Title</code>에 <code>UserID</code>, <code>Password</code>, <code>ServerIP</code>, <code>ConnectServerButton</code>과
+  <em>정확히 같은 이름</em>의 위젯이 없으면 이제 <strong>블루프린트 컴파일 에러</strong>가 납니다.
+  런타임에 조용히 <code>null</code>이 되던 것보다 낫지만, 이름이 다르면 디자이너에서 맞춰줘야 합니다.</p>
+  <p>신규 위젯(<code>LoginButton</code>, <code>SignUpButton</code>, <code>InfoText</code>)도 같은 <code>BindWidget</code> 방식으로 통일합니다.</p>
+</div>
+
+<div class="box warn">
+  <p><strong>미결 &mdash; <code>LobbyWidgetBase.h</code>에 같은 오타 6개</strong></p>
+  <p><code>StartButton</code>, <code>ChatButton</code>, <code>ChatInput</code>, <code>LeftTimeText</code>,
+  <code>ConnectCountText</code>, <code>ChatScrollBox</code>가 모두 <code>meta = (WidgetBind)</code>이며,
+  <code>GetWidgetFromName</code> 폴백 없이 전부 <code>if (X)</code> 가드로만 감싸져 있습니다.</p>
+  <p>이번 작업 범위 밖이고, 잘못 고치면 <code>WBP_Lobby</code> 컴파일이 깨질 수 있어 <strong>건드리지 않았습니다.</strong>
+  별도 작업으로 다룰지 결정 필요.</p>
 </div>
 
 <hr>
@@ -334,8 +346,17 @@ UPROPERTY(BlueprintReadOnly, Category = "Data") int32   Level = 0;</code></pre>
   <li><s>UNIQUE 인덱스가 이미 있나요?</s> <strong>&rarr; 있음. 스키마 변경 없음.</strong></li>
   <li><s>가상환경 vs 전역 설치?</s> <strong>&rarr; <code>Server/.venv</code> 가상환경.</strong></li>
   <li><s>pytest를 포함할까요?</s> <strong>&rarr; 제외. <code>/docs</code> 수동 확인.</strong></li>
-  <li><code>meta = (WidgetBind)</code> 오타를 이번에 같이 고칠까요, 그대로 둘까요? <span class="meta">(미결)</span></li>
+  <li><s><code>meta = (WidgetBind)</code> 오타를 고칠까요?</s> <strong>&rarr; <code>TitleWidgetBase.h</code> 4개 수정 완료 (<code>d568bf4</code>).</strong></li>
+  <li><code>LobbyWidgetBase.h</code>의 동일 오타 6개는 어떻게 할까요? <span class="meta">(미결 &mdash; 범위 밖이라 보류)</span></li>
 </ol>
+
+<h2>7. 작업 기록</h2>
+<table>
+  <tr><th>커밋</th><th>내용</th></tr>
+  <tr><td><code>aadfe33</code></td><td>설계 문서 및 참고 자료 추가</td></tr>
+  <tr><td><code>d568bf4</code></td><td><code>TitleWidgetBase</code> 바인딩 지정자 오타 수정</td></tr>
+</table>
+<p class="meta">브랜치: <code>feature/login-signup</code> (<code>main</code>에서 분기)</p>
 
 </body>
 </html>
