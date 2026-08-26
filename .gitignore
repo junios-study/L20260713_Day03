@@ -75,3 +75,4 @@ DerivedDataCache/*
 
 # Python virtual environment
 Server/.venv/
+__pycache__/
